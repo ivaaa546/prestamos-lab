@@ -2,43 +2,222 @@
   min-height: 100vh;
 }
 
-.welcome {
+.inventory-page,
+.inventory-page * {
   box-sizing: border-box;
-  width: min(100% - 2rem, 48rem);
-  margin: 10vh auto;
-  padding: clamp(2rem, 6vw, 4rem);
-  border: 1px solid #dbe3ee;
-  border-radius: 1.5rem;
-  background: #fff;
-  box-shadow: 0 1.5rem 4rem rgb(24 42 72 / 8%);
 }
 
-.eyebrow {
-  color: #4767a8;
-  font-size: 0.8rem;
+.inventory-page {
+  width: min(100%, 76rem);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 4vw, 3rem);
+}
+
+.inventory-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  border: 1px solid #e0e7f0;
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 1rem 3rem rgb(24 42 72 / 6%);
+}
+
+.inventory-eyebrow {
+  margin: 0 0 0.55rem;
+  color: #526fae;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-h1 {
+.inventory-header h1 {
+  margin: 0;
   color: #14233b;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  line-height: 1.1;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
-.welcome > p:not(.eyebrow) {
-  color: #52627a;
-  font-size: 1.1rem;
+.inventory-subtitle {
+  margin: 0.7rem 0 0;
+  color: #68778e;
 }
 
-.badge {
-  display: inline-block;
-  margin-top: 1.5rem;
-  padding: 0.55rem 0.85rem;
-  border-radius: 999px;
-  background: #e9efff;
-  color: #3155a0;
-  font-size: 0.85rem;
+.availability-count {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border: 1px solid #d8eadf;
+  border-radius: 0.8rem;
+  background: #f1f8f3;
+  color: #3e5949;
+  font-size: 0.9rem;
+}
+
+.availability-count__number {
+  color: #18733e;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.equipment-section {
+  margin-top: clamp(2rem, 5vw, 3.25rem);
+}
+
+.equipment-section__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.equipment-section__heading .inventory-eyebrow {
+  margin-bottom: 0.3rem;
+}
+
+.equipment-section__heading h2 {
+  margin: 0;
+  color: #14233b;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.equipment-total {
+  color: #68778e;
+  font-size: 0.9rem;
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.equipment-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #e0e7f0;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 0.5rem 1.5rem rgb(24 42 72 / 4%);
+}
+
+.equipment-card__details {
+  min-width: 0;
+}
+
+.equipment-card__category {
+  margin: 0 0 0.4rem;
+  color: #68778e;
+  font-size: 0.8rem;
   font-weight: 600;
+}
+
+.equipment-card h3 {
+  margin: 0;
+  color: #1e2e46;
+  font-size: 1rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.equipment-card__actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-badge--available {
+  background: #e9f6ee;
+  color: #176b39;
+}
+
+.status-badge--loaned {
+  background: #fcebec;
+  color: #a32932;
+}
+
+.status-badge__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.loan-button {
+  min-height: 2.5rem;
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 0.65rem;
+  background: #3158a5;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.loan-button:not(:disabled):hover {
+  transform: translateY(-1px);
+  background: #244580;
+}
+
+.loan-button:disabled {
+  background: #e5e9ef;
+  color: #838d9c;
+  cursor: not-allowed;
+}
+
+.loan-button:focus-visible {
+  outline: 3px solid #89aaf4;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .inventory-page {
+    padding: 1rem;
+  }
+
+  .inventory-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.35rem;
+  }
+
+  .equipment-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .equipment-card {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loan-button {
+    transition: none;
+  }
 }
