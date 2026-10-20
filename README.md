@@ -45,6 +45,7 @@ Abre la URL que informe Vite, normalmente `http://localhost:5173`.
 
 ```bash
 npm run lint
+npm test
 npm run build
 ```
 
@@ -63,3 +64,7 @@ Se usa `json-server` 0.17.4: al crear un registro sin `id`, asigna un id numéri
 Las mutaciones se guardan en `db.json` y persisten al reiniciar la página y el servidor. El registro y la devolución requieren dos peticiones independientes (préstamo y equipo); `json-server` no ofrece transacciones ni garantías de concurrencia entre ellas. La interfaz intenta compensar una petición parcial (borrando un préstamo recién creado o revirtiendo el indicador de devolución), vuelve a consultar la API e informa si la compensación también falla. Esto reduce inconsistencias, pero no promete atomicidad.
 
 Durante una carga, un error de lectura o una inconsistencia entre equipos y préstamos, las operaciones quedan bloqueadas. Reintentar solo vuelve a consultar los datos, nunca repite un POST. Si la inconsistencia persiste, hay que revisar y corregir los registros en la API antes de reintentar; recargar no repara por sí solo la base. Una respuesta de escritura perdida puede dejar un resultado incierto y el uso simultáneo desde varias pestañas sigue sin estar protegido por transacciones.
+
+Cada petición tiene un límite de 10 segundos, incluida la lectura del JSON y las compensaciones. Una cancelación por desmontaje no se muestra como error. Si una escritura supera ese límite, el mensaje advierte que el servidor podría haber aplicado el cambio; la interfaz consulta los datos sin repetir automáticamente la escritura. El límite es por petición, no por toda la secuencia de registro o devolución.
+
+`npm test` ejecuta pruebas aisladas de los servicios HTTP con respuestas simuladas; no modifica `db.json` ni requiere que la API esté encendida.

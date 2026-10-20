@@ -214,7 +214,7 @@ function Inventario() {
 
   return (
     <main className="inventory-page">
-      <Encabezado equipos={equipos} />
+      <Encabezado equipos={equipos} estado={cargando ? 'cargando' : errorDeLectura || datosInconsistentes ? 'error' : 'listo'} />
 
       {(errorDeLectura || datosInconsistentes) && (
         <div className="api-read-error" role="alert">
@@ -226,7 +226,7 @@ function Inventario() {
           }}>Reintentar</button>
         </div>
       )}
-      {errorOperacion && <p className="operation-error" role="alert">{errorOperacion}</p>}
+      {errorOperacion && !equipoSeleccionado && <p className="operation-error" role="alert">{errorOperacion}</p>}
 
       {cargando ? (
         <p className="api-loading" role="status">Cargando inventario y préstamos…</p>
@@ -263,9 +263,7 @@ function Inventario() {
         />
       )}
 
-      {cargando ? (
-        <p className="api-loading" role="status">Cargando préstamos activos…</p>
-      ) : errorDeLectura ? null : (
+      {!cargando && !errorDeLectura && (
         <TablaPrestamos
           prestamos={prestamosActivos}
           equipos={equipos}

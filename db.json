@@ -1,17 +1,81 @@
 {
   "equipos": [
-    { "id": 1, "nombre": "iPad Air de 11 pulgadas", "categoria": "Tablet", "disponible": true },
-    { "id": 2, "nombre": "Samsung Galaxy Tab S9", "categoria": "Tablet", "disponible": false },
-    { "id": 3, "nombre": "Lenovo Tab P12", "categoria": "Tablet", "disponible": true },
-    { "id": 4, "nombre": "Cámara Canon EOS Rebel T7", "categoria": "Cámara", "disponible": true },
-    { "id": 5, "nombre": "Sony Alpha a6400", "categoria": "Cámara", "disponible": false },
-    { "id": 6, "nombre": "Nikon Z 50", "categoria": "Cámara", "disponible": true },
-    { "id": 7, "nombre": "Micrófono Rode NT-USB Mini", "categoria": "Micrófono", "disponible": true },
-    { "id": 8, "nombre": "Micrófono Shure MV7", "categoria": "Micrófono", "disponible": false }
+    {
+      "id": 1,
+      "nombre": "iPad Air de 11 pulgadas",
+      "categoria": "Tablet",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": "Samsung Galaxy Tab S9",
+      "categoria": "Tablet",
+      "disponible": true
+    },
+    {
+      "id": 3,
+      "nombre": "Lenovo Tab P12",
+      "categoria": "Tablet",
+      "disponible": true
+    },
+    {
+      "id": 4,
+      "nombre": "Cámara Canon EOS Rebel T7",
+      "categoria": "Cámara",
+      "disponible": true
+    },
+    {
+      "id": 5,
+      "nombre": "Sony Alpha a6400",
+      "categoria": "Cámara",
+      "disponible": false
+    },
+    {
+      "id": 6,
+      "nombre": "Nikon Z 50",
+      "categoria": "Cámara",
+      "disponible": true
+    },
+    {
+      "id": 7,
+      "nombre": "Micrófono Rode NT-USB Mini",
+      "categoria": "Micrófono",
+      "disponible": true
+    },
+    {
+      "id": 8,
+      "nombre": "Micrófono Shure MV7",
+      "categoria": "Micrófono",
+      "disponible": false
+    }
   ],
   "prestamos": [
-    { "id": 1, "equipoId": 2, "solicitante": "Andrea López", "carne": "2020-01-00001", "fechaPrestamo": "2026-10-17", "fechaLimite": "2026-10-19", "devuelto": false },
-    { "id": 2, "equipoId": 5, "solicitante": "Carlos Méndez", "carne": "2021-02-00002", "fechaPrestamo": "2026-10-20", "fechaLimite": "2026-10-22", "devuelto": false },
-    { "id": 3, "equipoId": 8, "solicitante": "María García", "carne": "2022-03-00003", "fechaPrestamo": "2026-10-20", "fechaLimite": "2026-10-22", "devuelto": false }
+    {
+      "id": 1,
+      "equipoId": 2,
+      "solicitante": "Andrea López",
+      "carne": "2020-01-00001",
+      "fechaPrestamo": "2026-10-17",
+      "fechaLimite": "2026-10-19",
+      "devuelto": true
+    },
+    {
+      "id": 2,
+      "equipoId": 5,
+      "solicitante": "Carlos Méndez",
+      "carne": "2021-02-00002",
+      "fechaPrestamo": "2026-10-20",
+      "fechaLimite": "2026-10-22",
+      "devuelto": false
+    },
+    {
+      "id": 3,
+      "equipoId": 8,
+      "solicitante": "María García",
+      "carne": "2022-03-00003",
+      "fechaPrestamo": "2026-10-20",
+      "fechaLimite": "2026-10-22",
+      "devuelto": false
+    }
   ]
 }

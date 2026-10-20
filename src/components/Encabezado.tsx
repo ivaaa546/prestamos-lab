@@ -2,9 +2,10 @@ import type { Equipo } from '../types'
 
 export interface EncabezadoProps {
   equipos: Equipo[]
+  estado: 'cargando' | 'error' | 'listo'
 }
 
-function Encabezado({ equipos }: EncabezadoProps) {
+function Encabezado({ equipos, estado }: EncabezadoProps) {
   const disponibles = equipos.filter((equipo) => equipo.disponible).length
 
   return (
@@ -15,7 +16,9 @@ function Encabezado({ equipos }: EncabezadoProps) {
         <p className="inventory-subtitle">Inventario de equipos</p>
       </div>
       <p className="availability-count" aria-live="polite">
-        <span className="availability-count__number">{disponibles}</span> de {equipos.length} equipos disponibles
+        {estado === 'cargando' ? 'Consultando disponibilidad…' : estado === 'error' ? 'Disponibilidad sin confirmar' : (
+          <><span className="availability-count__number">{disponibles}</span> de {equipos.length} equipos disponibles</>
+        )}
       </p>
     </header>
   )

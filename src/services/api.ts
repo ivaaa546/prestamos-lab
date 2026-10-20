@@ -22,19 +22,37 @@ function obtenerBaseApi(): string {
 
 async function solicitudJson<T>(ruta: string, init: RequestInit = {}): Promise<T> {
   const base = obtenerBaseApi()
-  let respuesta: Response
+  const controlador = new AbortController()
+  const cancelar = () => controlador.abort(init.signal?.reason)
+  let tiempoAgotado = false
+  const temporizador = setTimeout(() => {
+    tiempoAgotado = true
+    controlador.abort()
+  }, 10_000)
+  init.signal?.addEventListener('abort', cancelar, { once: true })
+  if (init.signal?.aborted) cancelar()
+
   try {
-    respuesta = await fetch(`${base}${ruta}`, init)
+    const respuesta = await fetch(`${base}${ruta}`, { ...init, signal: controlador.signal })
+    if (!respuesta.ok) {
+      throw new ApiError(`La API respondió con un error (${respuesta.status}).`, respuesta.status)
+    }
+    return (await respuesta.json()) as T
   } catch (error) {
-    if (error instanceof DOMException && error.name === 'AbortError') throw error
+    if (init.signal?.aborted) throw error
+    if (tiempoAgotado) {
+      const detalle = init.method && init.method !== 'GET'
+        ? ' El servidor podría haber aplicado el cambio. Comprueba los datos antes de repetir la operación.'
+        : ' Comprueba la conexión y pulsa Reintentar.'
+      throw new ApiError(`La API tardó más de 10 segundos en responder.${detalle}`)
+    }
+    if (error instanceof ApiError) throw error
+    if (error instanceof SyntaxError) throw new ApiError('La API devolvió una respuesta JSON no válida.')
     throw new ApiError('No se pudo conectar con la API. Comprueba que json-server esté en ejecución.')
+  } finally {
+    clearTimeout(temporizador)
+    init.signal?.removeEventListener('abort', cancelar)
   }
-
-  if (!respuesta.ok) {
-    throw new ApiError(`La API respondió con un error (${respuesta.status}).`, respuesta.status)
-  }
-
-  return (await respuesta.json()) as T
 }
 
 function opcionesJson(metodo: 'POST' | 'PATCH', datos: unknown): RequestInit {
@@ -73,8 +91,5 @@ export function restaurarPrestamoActivo(id: number): Promise<Prestamo> {
 }
 
 export function eliminarPrestamoCompensado(id: number): Promise<void> {
-  const respuesta = fetch(`${obtenerBaseApi()}/prestamos/${id}`, { method: 'DELETE' })
-  return respuesta.then((resultado) => {
-    if (!resultado.ok) throw new ApiError(`No se pudo compensar el préstamo (${resultado.status}).`, resultado.status)
-  })
+  return solicitudJson<unknown>(`/prestamos/${id}`, { method: 'DELETE' }).then(() => undefined)
 }
