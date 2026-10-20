@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Equipo, Prestamo } from '../types'
 import Encabezado from '../components/Encabezado'
 import FormularioPrestamo, { type DatosPrestamoFormulario } from '../components/FormularioPrestamo'
+import FiltrosInventario from '../components/FiltrosInventario'
 import ListaEquipos from '../components/ListaEquipos'
 import TablaPrestamos from '../components/TablaPrestamos'
 import { equiposIniciales } from '../data/equipos'
@@ -19,8 +20,18 @@ function Inventario() {
   const [equipos, setEquipos] = useState<Equipo[]>(equiposIniciales)
   const [prestamos, setPrestamos] = useState<Prestamo[]>(prestamosIniciales)
   const [equipoSeleccionadoId, setEquipoSeleccionadoId] = useState<number | null>(null)
+  const [busqueda, setBusqueda] = useState('')
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('')
   const equipoSeleccionado = equipos.find((equipo) => equipo.id === equipoSeleccionadoId)
   const prestamosActivos = prestamos.filter((prestamo) => prestamo.devuelto === false)
+  const terminoNormalizado = busqueda.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase()
+  const equiposFiltrados = equipos.filter((equipo) => {
+    const coincideCategoria = !categoriaSeleccionada || equipo.categoria === categoriaSeleccionada
+    const nombreNormalizado = equipo.nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase()
+    const coincideNombre = !terminoNormalizado || nombreNormalizado.includes(terminoNormalizado)
+    return coincideCategoria && coincideNombre
+  })
+  const filtrosAplicados = busqueda.trim().length > 0 || categoriaSeleccionada !== ''
 
   const manejarPrestar = (id: number) => {
     const equipo = equipos.find((elemento) => elemento.id === id)
@@ -76,7 +87,18 @@ function Inventario() {
   return (
     <main className="inventory-page">
       <Encabezado equipos={equipos} />
-      <ListaEquipos equipos={equipos} onPrestar={manejarPrestar} />
+      <FiltrosInventario
+        busqueda={busqueda}
+        categoriaSeleccionada={categoriaSeleccionada}
+        onCambiarBusqueda={setBusqueda}
+        onCambiarCategoria={setCategoriaSeleccionada}
+        onLimpiar={() => {
+          setBusqueda('')
+          setCategoriaSeleccionada('')
+        }}
+        filtrosAplicados={filtrosAplicados}
+      />
+      <ListaEquipos equipos={equiposFiltrados} onPrestar={manejarPrestar} />
       {equipoSeleccionado && (
         <FormularioPrestamo
           key={equipoSeleccionado.id}
