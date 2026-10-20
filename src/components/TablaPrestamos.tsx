@@ -4,6 +4,7 @@ export interface TablaPrestamosProps {
   prestamos: Prestamo[]
   equipos: Equipo[]
   onDevolver: (id: number) => void
+  operacionEnCurso: boolean
 }
 
 function interpretarFechaLocal(valor: string): Date | null {
@@ -39,7 +40,7 @@ function estaVencido(fechaLimite: string): boolean {
   return Boolean(interpretarFechaLocal(fechaLimite)) && fechaLimite < fechaHoy
 }
 
-function TablaPrestamos({ prestamos, equipos, onDevolver }: TablaPrestamosProps) {
+function TablaPrestamos({ prestamos, equipos, onDevolver, operacionEnCurso }: TablaPrestamosProps) {
   return (
     <section className="loans-section" aria-labelledby="loans-heading">
       <div className="loans-section__heading">
@@ -80,6 +81,7 @@ function TablaPrestamos({ prestamos, equipos, onDevolver }: TablaPrestamosProps)
                       <button
                         className="return-button"
                         type="button"
+                        disabled={operacionEnCurso}
                         onClick={() => onDevolver(prestamo.id)}
                       >
                         Devolver

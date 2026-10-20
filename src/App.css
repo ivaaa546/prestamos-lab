@@ -456,6 +456,44 @@
   font-size: clamp(1.35rem, 3vw, 1.8rem);
 }
 
+.api-loading,
+.api-read-error,
+.operation-error {
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.85rem;
+}
+
+.api-loading {
+  border: 1px solid #dbe3ee;
+  background: #fff;
+  color: #52627a;
+}
+
+.api-read-error,
+.operation-error {
+  border: 1px solid #edc7c8;
+  background: #fff5f4;
+  color: #8d252d;
+}
+
+.api-read-error p {
+  margin: 0 0 0.8rem;
+}
+
+.operation-error {
+  line-height: 1.5;
+}
+
+.api-read-error .return-button:focus-visible,
+.api-read-error .return-button:disabled,
+.return-button:disabled,
+.cancel-button:disabled,
+.panel-close-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .empty-loans {
   padding: 1.25rem;
   border: 1px solid #e0e7f0;

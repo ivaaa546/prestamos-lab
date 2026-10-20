@@ -4,9 +4,10 @@ import TarjetaEquipo from './TarjetaEquipo'
 export interface ListaEquiposProps {
   equipos: Equipo[]
   onPrestar: (id: number) => void
+  operacionEnCurso: boolean
 }
 
-function ListaEquipos({ equipos, onPrestar }: ListaEquiposProps) {
+function ListaEquipos({ equipos, onPrestar, operacionEnCurso }: ListaEquiposProps) {
   return (
     <section className="equipment-section" aria-labelledby="equipment-heading">
       <div className="equipment-section__heading">
@@ -21,7 +22,7 @@ function ListaEquipos({ equipos, onPrestar }: ListaEquiposProps) {
       ) : (
         <div className="equipment-grid">
           {equipos.map((equipo) => (
-            <TarjetaEquipo key={equipo.id} equipo={equipo} onPrestar={onPrestar} />
+            <TarjetaEquipo key={equipo.id} equipo={equipo} onPrestar={onPrestar} operacionEnCurso={operacionEnCurso} />
           ))}
         </div>
       )}

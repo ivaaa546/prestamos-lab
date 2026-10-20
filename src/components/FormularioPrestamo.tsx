@@ -10,7 +10,10 @@ export interface DatosPrestamoFormulario {
 interface FormularioPrestamoProps {
   equipo: Equipo
   onCancelar: () => void
-  onRegistrar: (datos: DatosPrestamoFormulario) => void
+  onRegistrar: (datos: DatosPrestamoFormulario) => Promise<void>
+  operacionEnCurso: boolean
+  registroBloqueado: boolean
+  errorOperacion: string | null
 }
 
 type ErroresFormulario = Partial<Record<keyof DatosPrestamoFormulario, string>>
@@ -82,7 +85,7 @@ function validarDatos(datos: DatosPrestamoFormulario): ErroresFormulario {
   return errores
 }
 
-function FormularioPrestamo({ equipo, onCancelar, onRegistrar }: FormularioPrestamoProps) {
+function FormularioPrestamo({ equipo, onCancelar, onRegistrar, operacionEnCurso, registroBloqueado, errorOperacion }: FormularioPrestamoProps) {
   const [datos, setDatos] = useState<DatosPrestamoFormulario>(FORMULARIO_VACIO)
   const [errores, setErrores] = useState<ErroresFormulario>({})
   const actualizarCampo = (campo: keyof DatosPrestamoFormulario, valor: string) => {
@@ -91,6 +94,7 @@ function FormularioPrestamo({ equipo, onCancelar, onRegistrar }: FormularioPrest
 
   const manejarEnvio = (evento: FormEvent<HTMLFormElement>) => {
     evento.preventDefault()
+    if (operacionEnCurso || registroBloqueado) return
     const nuevosErrores = validarDatos(datos)
     setErrores(nuevosErrores)
     if (Object.keys(nuevosErrores).length === 0) {
@@ -106,11 +110,12 @@ function FormularioPrestamo({ equipo, onCancelar, onRegistrar }: FormularioPrest
           <h2 id="loan-form-heading">Solicitar equipo</h2>
           <p className="loan-form-panel__equipment">Equipo: {equipo.nombre}</p>
         </div>
-        <button className="panel-close-button" type="button" onClick={onCancelar} aria-label="Cancelar y cerrar">
+        <button className="panel-close-button" type="button" onClick={onCancelar} disabled={operacionEnCurso} aria-label="Cancelar y cerrar">
           ×
         </button>
       </div>
 
+      {errorOperacion && <p className="operation-error" role="alert">{errorOperacion}</p>}
       <form noValidate onSubmit={manejarEnvio}>
         <div className="form-field">
           <label htmlFor="solicitante">Solicitante</label>
@@ -155,8 +160,10 @@ function FormularioPrestamo({ equipo, onCancelar, onRegistrar }: FormularioPrest
         </div>
 
         <div className="loan-form-actions">
-          <button className="loan-button" type="submit">Registrar préstamo</button>
-          <button className="cancel-button" type="button" onClick={onCancelar}>Cancelar</button>
+          <button className="loan-button" type="submit" disabled={operacionEnCurso || registroBloqueado}>
+            {operacionEnCurso ? 'Registrando…' : 'Registrar préstamo'}
+          </button>
+          <button className="cancel-button" type="button" onClick={onCancelar} disabled={operacionEnCurso}>Cancelar</button>
         </div>
       </form>
     </section>

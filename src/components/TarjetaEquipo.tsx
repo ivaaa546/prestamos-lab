@@ -3,9 +3,10 @@ import type { Equipo } from '../types'
 export interface TarjetaEquipoProps {
   equipo: Equipo
   onPrestar: (id: number) => void
+  operacionEnCurso: boolean
 }
 
-function TarjetaEquipo({ equipo, onPrestar }: TarjetaEquipoProps) {
+function TarjetaEquipo({ equipo, onPrestar, operacionEnCurso }: TarjetaEquipoProps) {
   return (
     <article className="equipment-card">
       <div className="equipment-card__details">
@@ -22,7 +23,7 @@ function TarjetaEquipo({ equipo, onPrestar }: TarjetaEquipoProps) {
         <button
           className="loan-button"
           type="button"
-          disabled={!equipo.disponible}
+          disabled={!equipo.disponible || operacionEnCurso}
           onClick={() => onPrestar(equipo.id)}
         >
           Prestar
