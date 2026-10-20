@@ -1,20 +1,21 @@
 import { useState, type FormEvent } from 'react'
 import type { Equipo } from '../types'
 
-interface FormularioPrestamoProps {
-  equipo: Equipo
-  onCancelar: () => void
-}
-
-interface DatosFormulario {
+export interface DatosPrestamoFormulario {
   solicitante: string
   carne: string
   fechaLimite: string
 }
 
-type ErroresFormulario = Partial<Record<keyof DatosFormulario, string>>
+interface FormularioPrestamoProps {
+  equipo: Equipo
+  onCancelar: () => void
+  onRegistrar: (datos: DatosPrestamoFormulario) => void
+}
 
-const FORMULARIO_VACIO: DatosFormulario = {
+type ErroresFormulario = Partial<Record<keyof DatosPrestamoFormulario, string>>
+
+const FORMULARIO_VACIO: DatosPrestamoFormulario = {
   solicitante: '',
   carne: '',
   fechaLimite: '',
@@ -40,7 +41,7 @@ function parsearFechaLocal(valor: string): Date | null {
   return fecha
 }
 
-function validarDatos(datos: DatosFormulario): ErroresFormulario {
+function validarDatos(datos: DatosPrestamoFormulario): ErroresFormulario {
   const errores: ErroresFormulario = {}
   const solicitante = datos.solicitante.trim()
 
@@ -81,21 +82,20 @@ function validarDatos(datos: DatosFormulario): ErroresFormulario {
   return errores
 }
 
-function FormularioPrestamo({ equipo, onCancelar }: FormularioPrestamoProps) {
-  const [datos, setDatos] = useState<DatosFormulario>(FORMULARIO_VACIO)
+function FormularioPrestamo({ equipo, onCancelar, onRegistrar }: FormularioPrestamoProps) {
+  const [datos, setDatos] = useState<DatosPrestamoFormulario>(FORMULARIO_VACIO)
   const [errores, setErrores] = useState<ErroresFormulario>({})
-  const [confirmado, setConfirmado] = useState(false)
-
-  const actualizarCampo = (campo: keyof DatosFormulario, valor: string) => {
+  const actualizarCampo = (campo: keyof DatosPrestamoFormulario, valor: string) => {
     setDatos((datosActuales) => ({ ...datosActuales, [campo]: valor }))
-    setConfirmado(false)
   }
 
   const manejarEnvio = (evento: FormEvent<HTMLFormElement>) => {
     evento.preventDefault()
     const nuevosErrores = validarDatos(datos)
     setErrores(nuevosErrores)
-    setConfirmado(Object.keys(nuevosErrores).length === 0)
+    if (Object.keys(nuevosErrores).length === 0) {
+      onRegistrar({ ...datos, solicitante: datos.solicitante.trim() })
+    }
   }
 
   return (
@@ -154,14 +154,8 @@ function FormularioPrestamo({ equipo, onCancelar }: FormularioPrestamoProps) {
           {errores.fechaLimite && <p className="field-error" id="fechaLimite-error">{errores.fechaLimite}</p>}
         </div>
 
-        {confirmado && (
-          <p className="form-confirmation" role="status">
-            Los datos son válidos. Aún no se ha registrado ningún préstamo.
-          </p>
-        )}
-
         <div className="loan-form-actions">
-          <button className="loan-button" type="submit">Validar datos</button>
+          <button className="loan-button" type="submit">Registrar préstamo</button>
           <button className="cancel-button" type="button" onClick={onCancelar}>Cancelar</button>
         </div>
       </form>

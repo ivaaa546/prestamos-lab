@@ -303,15 +303,6 @@
   font-size: 0.85rem;
 }
 
-.form-confirmation {
-  margin: 0;
-  padding: 0.85rem 1rem;
-  border: 1px solid #c7e6d0;
-  border-radius: 0.7rem;
-  background: #eff8f1;
-  color: #176b39;
-}
-
 .loan-form-actions {
   display: flex;
   flex-wrap: wrap;
@@ -343,6 +334,124 @@
 
   .loan-form-actions > button {
     width: 100%;
+  }
+}
+
+.loans-section {
+  min-width: 0;
+  margin-top: clamp(2rem, 5vw, 3.25rem);
+}
+
+.loans-section__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.loans-section__heading .inventory-eyebrow {
+  margin-bottom: 0.3rem;
+}
+
+.loans-section__heading h2 {
+  margin: 0;
+  color: #14233b;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.empty-loans {
+  padding: 1.25rem;
+  border: 1px solid #e0e7f0;
+  border-radius: 0.9rem;
+  background: #fff;
+  color: #68778e;
+}
+
+.loans-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e0e7f0;
+  border-radius: 1rem;
+  background: #fff;
+  overscroll-behavior-inline: contain;
+}
+
+.loans-table-scroll:focus-visible {
+  outline: 3px solid #89aaf4;
+  outline-offset: 3px;
+}
+
+.loans-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.loans-table th,
+.loans-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #e8edf3;
+  vertical-align: middle;
+}
+
+.loans-table th {
+  background: #f7f9fc;
+  color: #52627a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.loans-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.loan-row--overdue td {
+  background: #fff5f4;
+}
+
+.loan-row--overdue td:first-child {
+  box-shadow: inset 3px 0 #c63e48;
+}
+
+.overdue-label {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: #fce3e2;
+  color: #a32932;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.return-button {
+  min-height: 2.4rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid #cbd5e2;
+  border-radius: 0.6rem;
+  background: #fff;
+  color: #263751;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.return-button:hover {
+  background: #f1f4f8;
+}
+
+.return-button:focus-visible {
+  outline: 3px solid #89aaf4;
+  outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+  .loans-table {
+    min-width: 38rem;
   }
 }
 
